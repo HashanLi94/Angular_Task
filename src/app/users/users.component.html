@@ -1,0 +1,205 @@
+<div class="main__section mt-5">
+  <div class="container">
+    <div class="header_section">
+      <h4>Users List</h4>
+    </div>
+    <hr />
+    <div class="users_section">
+      <div class="row">
+        <div class="col-12 text-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Add User
+          </button>
+        </div>
+
+        <div class="col-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email Address</th>
+                <th scope="col">Avatar</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <th scope="row">{{ user.first_name }}</th>
+                <th scope="row">{{ user.last_name }}</th>
+                <th scope="row">{{ user.email }}</th>
+                <th scope="row" *ngIf="user.avatar; else notAvatar">
+                  <img src="{{ user.avatar }}" alt="" srcset="" />
+                </th>
+                <ng-template #notAvatar>
+                  <th scope="row">Not Available</th>
+                </ng-template>
+
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-sm action-btn"
+                  >
+                    Update
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="onDeleteUser(user)"
+                  >
+                    Delete
+                  </button>
+                </td>
+
+                <!-- udpade user modal-->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-12">
+          <!-- <ul *ngIf="pager.pages" class="pagination">
+                        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item first-item">
+                            <a routerLink [queryParams]="{ page: 1 }" class="page-link">First</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item previous-item">
+                            <a routerLink [queryParams]="{ page: pager.currentPage - 1 }" class="page-link">Previous</a>
+                        </li>
+                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item number-item">
+                            <a routerLink [queryParams]="{ page: page }" class="page-link">{{page}}</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item next-item">
+                            <a routerLink [queryParams]="{ page: pager.currentPage + 1 }" class="page-link">Next</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item last-item">
+                            <a routerLink [queryParams]="{ page: pager.totalPages }" class="page-link">Last</a>
+                        </li>
+                    </ul> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        [formGroup]="addNewUser"
+        (ngSubmit)="onCreateNewUser(addNewUser.value)"
+      >
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >First Name <span style="color: red"> *</span>
+                </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  formControlName="firstName"
+                />
+                <div
+                  style="color: red"
+                  *ngIf="
+                    addNewUser.get('firstName').invalid &&
+                    addNewUser.get('firstName').touched
+                  "
+                >
+                  This Field is Required*
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Last Name <span style="color: red"> *</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  formControlName="lastName"
+                />
+                <div
+                  style="color: red"
+                  *ngIf="
+                    addNewUser.get('lastName').invalid &&
+                    addNewUser.get('lastName').touched
+                  "
+                >
+                  This Field is Required*
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12">
+                <label class="form-label"
+                  >Email <span style="color: red"> *</span></label
+                >
+                <input
+                  class="form-control"
+                  type="email"
+                  formControlName="email"
+                />
+                <div
+                  style="color: red"
+                  *ngIf="
+                    addNewUser.get('email').invalid &&
+                    addNewUser.get('email').touched
+                  "
+                >
+                  <div *ngIf="addNewUser.get('email').errors.required">
+                    This Field is Required*
+                  </div>
+                  <div *ngIf="addNewUser.get('email').errors.email">
+                    Enter a Valid Email
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="addNewUser.invalid"
+          >
+            Save changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
