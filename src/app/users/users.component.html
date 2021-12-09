@@ -44,6 +44,9 @@
                   <button
                     type="button"
                     class="btn btn-warning btn-sm action-btn"
+                    (click)="onUpdateUser(user)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal3"
                   >
                     Update
                   </button>
@@ -58,6 +61,131 @@
                 </td>
 
                 <!-- udpade user modal-->
+                <div
+                  class="modal fade"
+                  id="exampleModal3"
+                  tabindex="-1"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Update User
+                        </h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <form
+                        [formGroup]="addNewUser"
+                        (ngSubmit)="onupdateCurrentUser(addNewUser.value, user)"
+                      >
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <label class="form-label"
+                                  >First Name <span style="color: red"> *</span>
+                                </label>
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  formControlName="firstName"
+                                />
+                                <div
+                                  style="color: red"
+                                  *ngIf="
+                                    addNewUser.get('firstName').invalid &&
+                                    addNewUser.get('firstName').touched
+                                  "
+                                >
+                                  This Field is Required*
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label"
+                                  >Last Name
+                                  <span style="color: red"> *</span></label
+                                >
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  formControlName="lastName"
+                                />
+                                <div
+                                  style="color: red"
+                                  *ngIf="
+                                    addNewUser.get('lastName').invalid &&
+                                    addNewUser.get('lastName').touched
+                                  "
+                                >
+                                  This Field is Required*
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <label class="form-label"
+                                  >Email
+                                  <span style="color: red"> *</span></label
+                                >
+                                <input
+                                  class="form-control"
+                                  type="email"
+                                  formControlName="email"
+                                />
+                                <div
+                                  style="color: red"
+                                  *ngIf="
+                                    addNewUser.get('email').invalid &&
+                                    addNewUser.get('email').touched
+                                  "
+                                >
+                                  <div
+                                    *ngIf="
+                                      addNewUser.get('email').errors.required
+                                    "
+                                  >
+                                    This Field is Required*
+                                  </div>
+                                  <div
+                                    *ngIf="addNewUser.get('email').errors.email"
+                                  >
+                                    Enter a Valid Email
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="addNewUser.invalid"
+                          >
+                            Update changes
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </tr>
             </tbody>
           </table>

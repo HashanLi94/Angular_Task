@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { element } from "protractor";
 import { UsersService } from "./users.service";
 
 @Component({
@@ -52,7 +51,7 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  onCreateNewUser(userValues) {
+  onCreateNewUser(values) {
     const User = {
       firstName: this.addNewUser.get("firstName").value,
       lastName: this.addNewUser.get("lastName").value,
@@ -85,10 +84,24 @@ export class UsersComponent implements OnInit {
     )
   }
 
-  onSelectedUser(user) {
-    this.SelectedUser = {};
-    let selectedUser = this.users.filter( element => user.id === element.id);
-    this.SelectedUser = selectedUser[0];
-    console.log(this.SelectedUser);
+  onUpdateUser(user) {
+    this.addNewUser.controls['firstName'].setValue(user.first_name);
+    this.addNewUser.controls['lastName'].setValue( user.last_name);
+    this.addNewUser.controls['email'].setValue(user.email);
+  }
+
+  onupdateCurrentUser(values, user) {
+    let UpdatedUser = {
+      name: values.firstName + values.lastName,
+      job: values.firstName,
+    }
+
+    return this.usersService.updateUser(UpdatedUser, user.id)
+    .subscribe( response => {
+      console.log(response);
+    },
+    error => {
+      console.log(error);
+    })
   }
 }

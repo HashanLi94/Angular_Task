@@ -23,4 +23,8 @@ export class UsersService {
   loadPage(page) {
     return this.http.get( this.apiBaseURL +  `users?page=${page}`).pipe(map((result:any)=>result));
   }
+
+  updateUser(user, id) {
+     return this.http.put(this.apiBaseURL+'users/'+id, user).pipe(map((result:any)=>result));
+  }
 }
