@@ -12,6 +12,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
+            (click)="onClickAddNewUser()"
           >
             Add User
           </button>
@@ -60,7 +61,7 @@
                   </button>
                 </td>
 
-                <!-- udpade user modal-->
+                <!-- update user modal-->
                 <div
                   class="modal fade"
                   id="exampleModal3"
@@ -193,22 +194,57 @@
 
         <div class="col-12">
           <!-- <ul *ngIf="pager.pages" class="pagination">
-                        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item first-item">
-                            <a routerLink [queryParams]="{ page: 1 }" class="page-link">First</a>
-                        </li>
-                        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item previous-item">
-                            <a routerLink [queryParams]="{ page: pager.currentPage - 1 }" class="page-link">Previous</a>
-                        </li>
-                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item number-item">
-                            <a routerLink [queryParams]="{ page: page }" class="page-link">{{page}}</a>
-                        </li>
-                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item next-item">
-                            <a routerLink [queryParams]="{ page: pager.currentPage + 1 }" class="page-link">Next</a>
-                        </li>
-                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item last-item">
-                            <a routerLink [queryParams]="{ page: pager.totalPages }" class="page-link">Last</a>
-                        </li>
-                    </ul> -->
+            <li
+              [ngClass]="{ disabled: pager.currentPage === 1 }"
+              class="page-item first-item"
+            >
+              <a routerLink [queryParams]="{ page: 1 }" class="page-link"
+                >First</a
+              >
+            </li>
+            <li
+              [ngClass]="{ disabled: pager.currentPage === 1 }"
+              class="page-item previous-item"
+            >
+              <a
+                routerLink
+                [queryParams]="{ page: pager.currentPage - 1 }"
+                class="page-link"
+                >Previous</a
+              >
+            </li>
+            <li
+              *ngFor="let page of pager.pages"
+              [ngClass]="{ active: pager.currentPage === page }"
+              class="page-item number-item"
+            >
+              <a routerLink [queryParams]="{ page: page }" class="page-link">{{
+                page
+              }}</a>
+            </li>
+            <li
+              [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
+              class="page-item next-item"
+            >
+              <a
+                routerLink
+                [queryParams]="{ page: pager.currentPage + 1 }"
+                class="page-link"
+                >Next</a
+              >
+            </li>
+            <li
+              [ngClass]="{ disabled: pager.currentPage === pager.totalPages }"
+              class="page-item last-item"
+            >
+              <a
+                routerLink
+                [queryParams]="{ page: pager.totalPages }"
+                class="page-link"
+                >Last</a
+              >
+            </li>
+          </ul> -->
         </div>
       </div>
     </div>

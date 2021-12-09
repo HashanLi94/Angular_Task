@@ -51,7 +51,11 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  onCreateNewUser(values) {
+  onClickAddNewUser() {
+    this.resetForm();
+  }
+
+  onCreateNewUser(values) {    
     const User = {
       firstName: this.addNewUser.get("firstName").value,
       lastName: this.addNewUser.get("lastName").value,
@@ -103,5 +107,11 @@ export class UsersComponent implements OnInit {
     error => {
       console.log(error);
     })
+  }
+
+  resetForm() {
+    this.addNewUser.controls['firstName'].setValue("");
+    this.addNewUser.controls['lastName'].setValue( "");
+    this.addNewUser.controls['email'].setValue("");
   }
 }
