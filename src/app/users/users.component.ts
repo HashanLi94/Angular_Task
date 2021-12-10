@@ -10,17 +10,13 @@ import { UsersService } from "./users.service";
 })
 export class UsersComponent implements OnInit {
   users: any = [];
-  pageOfItems = [];
-  pager = {};
   addNewUser: FormGroup;
-  SelectedUser = {}
-  constructor(
-    private usersService: UsersService,
-    private route: ActivatedRoute
-  ) {}
+
+  constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((x) => this.loadPage(x.page || 1));
+    // get all users
+    this.loadUsers();
 
     // add user form validation
     this.addNewUser = new FormGroup({
@@ -30,20 +26,12 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  loadPage(page) {
-    return this.usersService.loadPage(page).subscribe(
+  // get all users
+  loadUsers() {
+    return this.usersService.loadPage().subscribe(
       (response) => {
         // get users
         this.users = response.data;
-        // pagination
-        let Obj = {
-          pages: response.total_pages,
-          currentPage: response.per_page,
-        };
-        this.pager = Obj;
-        this.pageOfItems = response.per_page;
-        console.log(response.total_pages);
-        console.log(response.total);
       },
       (error) => {
         console.log(error);
@@ -51,11 +39,8 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  onClickAddNewUser() {
-    this.resetForm();
-  }
-
-  onCreateNewUser(values) {    
+  // Create a new User
+  onCreateNewUser(values) {
     const User = {
       firstName: this.addNewUser.get("firstName").value,
       lastName: this.addNewUser.get("lastName").value,
@@ -63,11 +48,10 @@ export class UsersComponent implements OnInit {
     };
     return this.usersService.saveNewUser(User).subscribe(
       (response) => {
-        console.log(response);
         let NewUser = {
           first_name: response.firstName,
-          last_name: response.firstName,
-          email: response.firstName,
+          last_name: response.lastName,
+          email: response.email,
           avatar: response.avatar ? response.avatar : "",
         };
         this.users.unshift(NewUser);
@@ -78,40 +62,46 @@ export class UsersComponent implements OnInit {
     );
   }
 
+  // Delete an user
   onDeleteUser(user) {
-    return this.usersService.deleteUser(user).subscribe (
-      response => {
-        let index = this.users.indexOf(user);
-        this.users.splice(index, 1);
-        console.log(response);
-      }
-    )
+    return this.usersService.deleteUser(user).subscribe((response) => {
+      let index = this.users.indexOf(user);
+      this.users.splice(index, 1);
+      console.log(response);
+    });
   }
 
+  // Update a current user
   onUpdateUser(user) {
-    this.addNewUser.controls['firstName'].setValue(user.first_name);
-    this.addNewUser.controls['lastName'].setValue( user.last_name);
-    this.addNewUser.controls['email'].setValue(user.email);
+    this.addNewUser.controls["firstName"].setValue(user.first_name);
+    this.addNewUser.controls["lastName"].setValue(user.last_name);
+    this.addNewUser.controls["email"].setValue(user.email);
   }
 
   onupdateCurrentUser(values, user) {
     let UpdatedUser = {
       name: values.firstName + values.lastName,
       job: values.firstName,
-    }
+    };
 
-    return this.usersService.updateUser(UpdatedUser, user.id)
-    .subscribe( response => {
-      console.log(response);
-    },
-    error => {
-      console.log(error);
-    })
+    return this.usersService.updateUser(UpdatedUser, user.id).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   resetForm() {
-    this.addNewUser.controls['firstName'].setValue("");
-    this.addNewUser.controls['lastName'].setValue( "");
-    this.addNewUser.controls['email'].setValue("");
+    this.addNewUser.controls["firstName"].setValue("");
+    this.addNewUser.controls["lastName"].setValue("");
+    this.addNewUser.controls["email"].setValue("");
   }
+
+  onClickAddNewUser() {
+    this.resetForm();
+  }
+
 }
